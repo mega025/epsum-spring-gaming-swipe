@@ -18,7 +18,7 @@ public class Genre {
 
     @ManyToMany(mappedBy = "list_genres")
     @JsonBackReference
-    private Set<FavVideogame> videogames = new HashSet<FavVideogame>();
+    private Set<FavVideogame> videogames = new HashSet<>();
 
 
     public Long getGenre_id() {

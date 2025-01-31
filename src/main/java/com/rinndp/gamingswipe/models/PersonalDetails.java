@@ -27,7 +27,7 @@ public class PersonalDetails {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    @OneToOne(mappedBy = "personal_details", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "personalDetails", fetch = FetchType.LAZY)
     @JsonBackReference
     private User user;
 

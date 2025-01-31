@@ -20,7 +20,6 @@ public class FavVideogame {
 
     private Integer release_year;
 
-    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
             name = "videogame_platforms",
@@ -36,7 +35,7 @@ public class FavVideogame {
             joinColumns = @JoinColumn(name="videogame_id"),
             inverseJoinColumns = @JoinColumn(name="genre_id")
     )
-    private Set<Platform> list_genres = new HashSet<>();
+    private Set<Genre> list_genres = new HashSet<>();
 
     public Long getVideogame_id() {
         return videogame_id;
@@ -62,11 +61,11 @@ public class FavVideogame {
         this.list_platforms = list_platforms;
     }
 
-    public Set<Platform> getList_genres() {
+    public Set<Genre> getList_genres() {
         return list_genres;
     }
 
-    public void setList_genres(Set<Platform> list_genres) {
+    public void setList_genres(Set<Genre> list_genres) {
         this.list_genres = list_genres;
     }
 }
