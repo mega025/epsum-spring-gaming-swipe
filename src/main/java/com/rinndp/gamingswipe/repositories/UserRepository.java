@@ -1,5 +1,6 @@
 package com.rinndp.gamingswipe.repositories;
 
+import com.rinndp.gamingswipe.models.PersonalDetails;
 import com.rinndp.gamingswipe.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

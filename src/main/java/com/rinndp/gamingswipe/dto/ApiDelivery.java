@@ -6,9 +6,9 @@ public class ApiDelivery<T> {
     private boolean success;
     private int status;
     private T data;
-    private Object error;
+    private String error;
 
-    public ApiDelivery(String message, boolean success, int status, T data, Object error) {
+    public ApiDelivery(String message, boolean success, int status, T data, String error) {
         this.message = message;
         this.success = success;
         this.status = status;
@@ -48,11 +48,11 @@ public class ApiDelivery<T> {
         this.data = data;
     }
 
-    public Object getError() {
+    public String getError() {
         return error;
     }
 
-    public void setError(Object error) {
+    public void setError(String error) {
         this.error = error;
     }
 }

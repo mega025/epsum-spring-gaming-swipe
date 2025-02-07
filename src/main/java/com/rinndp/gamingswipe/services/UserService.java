@@ -34,28 +34,27 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
     public void deleteUserById(long id) {
         User optionalUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         this.userRepository.delete(optionalUser);
     }
 
     public User createUser(User user) {
-        if (this.userRepository.findByEmail(user.getEmail()).isPresent()){
+        Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isPresent()){
             throw new RuntimeException("This email already exists");
         } else {
             User newUser = new User();
             newUser.setEmail(user.getEmail());
-            newUser.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
             PersonalDetails newPersonalDetails = new PersonalDetails();
-            newPersonalDetails.setFirstName(user.getPersonalDetails().getFirstName());
+
             newPersonalDetails.setLastName(user.getPersonalDetails().getLastName());
+            newPersonalDetails.setFirstName(user.getPersonalDetails().getFirstName());
+            newPersonalDetails.setPassword(this.passwordEncoder.encode(user.getPersonalDetails().getPassword()));
 
             newUser.setPersonalDetails(newPersonalDetails);
+            newUser.setListFavGames(user.getListFavGames());
 
             return this.userRepository.save(newUser);
         }
@@ -68,7 +67,7 @@ public class UserService {
             return new ApiDelivery<>("User not found", false, 404, null, "not found");
 
         User user = optionalUser.get();
-        if(!this.passwordEncoder.matches(password, user.getPassword()))
+        if(!this.passwordEncoder.matches(password, user.getPersonalDetails().getPassword()))
             return new ApiDelivery<>("Incorrect password", false, 400, null, "Incorrect password");
 
         String token = createToken(email);

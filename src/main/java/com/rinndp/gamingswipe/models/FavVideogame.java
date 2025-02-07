@@ -28,7 +28,6 @@ public class FavVideogame {
     )
     private Set<Platform> list_platforms = new HashSet<>();
 
-    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
             name = "videogame_genres",

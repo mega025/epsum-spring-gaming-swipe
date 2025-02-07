@@ -3,31 +3,47 @@ package com.rinndp.gamingswipe.dto;
 
 import com.rinndp.gamingswipe.models.User;
 
-public class LoginResponse extends User {
+public class LoginResponse {
 
-    private Long id;
+    private Long user_id;
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
+    private String imageUrl;
     private String password;
     private String token;
 
     public LoginResponse(User user, String token) {
-        this.id = user.getUser_id();
+        this.user_id = user.getUserId();
         this.firstName = user.getPersonalDetails().getFirstName();
         this.lastName = user.getPersonalDetails().getLastName();
         this.email = user.getEmail();
-        this.password = user.getPassword();
+        this.password = user.getPersonalDetails().getPassword();
         this.token = token;
     }
 
+    public Long getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getFirstName() {
@@ -52,14 +68,6 @@ public class LoginResponse extends User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getPassword() {

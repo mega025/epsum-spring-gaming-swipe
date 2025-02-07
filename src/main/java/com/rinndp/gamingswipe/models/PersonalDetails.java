@@ -11,7 +11,8 @@ public class PersonalDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_details_id;
+    @Column(name = "personal_details_id")
+    private Long personal_details_id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -20,6 +21,9 @@ public class PersonalDetails {
     private String lastName;
 
     private String image_url;
+
+    @Column(nullable = false)
+    private String password;
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -31,24 +35,28 @@ public class PersonalDetails {
     @JsonBackReference
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Long getUser_details_id() {
-        return user_details_id;
+        return personal_details_id;
     }
 
-    public void setUser_details_id(Long user_details_id) {
-        this.user_details_id = user_details_id;
+    public void setUser_details_id(Long personalDetailsId) {
+        this.personal_details_id = personalDetailsId;
     }
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firtName) {
+        this.firstName = firtName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getImage_url() {
@@ -59,16 +67,12 @@ public class PersonalDetails {
         this.image_url = image_url;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getPassword() {
+        return password;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDateTime getCreated_at() {
@@ -85,5 +89,13 @@ public class PersonalDetails {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
