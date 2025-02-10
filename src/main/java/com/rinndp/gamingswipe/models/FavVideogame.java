@@ -20,6 +20,8 @@ public class FavVideogame {
 
     private Integer release_year;
 
+    private String image_url;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
             name = "videogame_platforms",
@@ -46,6 +48,30 @@ public class FavVideogame {
 
     public String getName() {
         return name;
+    }
+
+    public Double getRating_score() {
+        return rating_score;
+    }
+
+    public void setRating_score(Double rating_score) {
+        this.rating_score = rating_score;
+    }
+
+    public Integer getRelease_year() {
+        return release_year;
+    }
+
+    public void setRelease_year(Integer release_year) {
+        this.release_year = release_year;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public void setName(String name) {
