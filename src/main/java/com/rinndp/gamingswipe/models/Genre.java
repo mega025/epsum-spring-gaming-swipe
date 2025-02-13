@@ -1,10 +1,12 @@
 package com.rinndp.gamingswipe.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 public class Genre {
@@ -14,9 +16,9 @@ public class Genre {
     private Long genre_id;
 
     @Column(nullable = false, unique = true)
-    private String genre_name;
+    private String name;
 
-    @ManyToMany(mappedBy = "list_genres")
+    @ManyToMany(mappedBy = "list_genres", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<FavVideogame> videogames = new HashSet<>();
 
@@ -30,11 +32,11 @@ public class Genre {
     }
 
     public String getGenre_name() {
-        return genre_name;
+        return name;
     }
 
-    public void setGenre_name(String genre_name) {
-        this.genre_name = genre_name;
+    public void setGenre_name(String name) {
+        this.name = name;
     }
 
     public Set<FavVideogame> getVideogames() {

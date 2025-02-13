@@ -1,8 +1,11 @@
 package com.rinndp.gamingswipe.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,13 +26,13 @@ public class User {
     )
     private PersonalDetails personalDetails;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_fav_games",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "videogame_id")
     )
-    private Set<FavVideogame> list_fav_games = new HashSet<>();
+    private List<FavVideogame> list_fav_games = new ArrayList<>();
 
     public Long getUserId() {
         return user_id;
@@ -48,11 +51,11 @@ public class User {
         this.personalDetails = personalDetails;
     }
 
-    public Set<FavVideogame> getListFavGames() {
+    public List<FavVideogame> getListFavGames() {
         return list_fav_games;
     }
 
-    public void setListFavGames(Set<FavVideogame> list_fav_games) {
+    public void setListFavGames(List<FavVideogame> list_fav_games) {
         this.list_fav_games = list_fav_games;
     }
 

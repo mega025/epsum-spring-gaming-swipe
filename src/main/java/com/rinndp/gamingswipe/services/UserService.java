@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,19 @@ public class UserService {
         this.userRepository.delete(optionalUser);
     }
 
+    public User updateUser(Long id, User updatedUser) {
+        return userRepository.findById(id).map(existingUser -> {
+
+            existingUser.getPersonalDetails().setFirstName(updatedUser.getPersonalDetails().getFirstName());
+            existingUser.getPersonalDetails().setLastName(updatedUser.getPersonalDetails().getLastName());
+            existingUser.getPersonalDetails().setPassword(updatedUser.getPersonalDetails().getPassword());
+
+            return userRepository.save(existingUser);
+        }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+
+
     public User createUser(User user) {
         Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
         if (optionalUser.isPresent()){
@@ -54,7 +68,7 @@ public class UserService {
             newPersonalDetails.setPassword(this.passwordEncoder.encode(user.getPersonalDetails().getPassword()));
 
             newUser.setPersonalDetails(newPersonalDetails);
-            newUser.setListFavGames(user.getListFavGames());
+            newUser.setListFavGames(new ArrayList<>());
 
             return this.userRepository.save(newUser);
         }

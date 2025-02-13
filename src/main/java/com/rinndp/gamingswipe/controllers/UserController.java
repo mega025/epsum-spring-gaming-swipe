@@ -29,6 +29,11 @@ public class UserController {
         return ResponseEntity.ok(userCreated);
     }
 
+    @PostMapping("/update/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        return ResponseEntity.ok(this.userService.updateUser(userId, updatedUser));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<ApiDelivery<LoginResponse>> login(@RequestBody LoginRequest credentials) {
         ApiDelivery<LoginResponse> response = this.userService.login(credentials.getEmail(), credentials.getPassword());

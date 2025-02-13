@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
 public class Platform {
 
@@ -14,9 +15,9 @@ public class Platform {
     private Long platform_id;
 
     @Column(nullable = false, unique = true)
-    private String platform_name;
+    private String abbreviation;
 
-    @ManyToMany(mappedBy = "list_platforms", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "list_platforms", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<FavVideogame> favVideogames = new HashSet<>();
 
@@ -36,11 +37,11 @@ public class Platform {
         this.platform_id = platform_id;
     }
 
-    public String getPlatform_name() {
-        return platform_name;
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
-    public void setPlatform_name(String platform_name) {
-        this.platform_name = platform_name;
+    public void setAbbreviation(String platform_name) {
+        this.abbreviation = platform_name;
     }
 }
