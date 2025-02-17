@@ -33,13 +33,14 @@ public class FavVideogameController {
     }
 
     @PostMapping("/add/{userId}")
-    public ResponseEntity<FavVideogame> addFavVideogame(@PathVariable Long userId, @RequestBody FavVideogame favVideogame) {
-        return ResponseEntity.ok(this.favVideogameService.addFavGame(userId, favVideogame));
+    public ResponseEntity<ApiDelivery> addFavVideogame(@PathVariable Long userId, @RequestBody FavVideogame favVideogame) {
+        ApiDelivery response = this.favVideogameService.addFavGame(userId, favVideogame);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/delete/{userId}")
-    public ResponseEntity<ApiDelivery> deleteFavVideogame(@PathVariable Long id, @PathVariable Long favVideogameId) {
-        ApiDelivery response = this.favVideogameService.deleteFavGame(id, favVideogameId);
+    public ResponseEntity<ApiDelivery> deleteFavVideogame(@PathVariable Long userId, @RequestBody Integer position) {
+        ApiDelivery response = this.favVideogameService.deleteFavGame(position, userId);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

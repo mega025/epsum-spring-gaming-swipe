@@ -1,7 +1,6 @@
 package com.rinndp.gamingswipe.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,7 @@ public class FavVideogame {
     public Long getVideogameId() {
         return videogame_id;
     }
+
 
     public void setVideogameId(Long videogame_id) {
         this.videogame_id = videogame_id;

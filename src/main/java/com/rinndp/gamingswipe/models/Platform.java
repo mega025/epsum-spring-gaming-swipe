@@ -17,16 +17,17 @@ public class Platform {
     @Column(nullable = false, unique = true)
     private String abbreviation;
 
-    @ManyToMany(mappedBy = "list_platforms", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "list_platforms", fetch = FetchType.LAZY)
     @JsonBackReference
-    private Set<FavVideogame> favVideogames = new HashSet<>();
+    private Set<FavVideogame> videogames = new HashSet<>();
+
 
     public Set<FavVideogame> getVideogames() {
-        return favVideogames;
+        return videogames;
     }
 
-    public void setVideogames(Set<FavVideogame> favVideogames) {
-        this.favVideogames = favVideogames;
+    public void setVideogames(Set<FavVideogame> videogames) {
+        this.videogames = videogames;
     }
 
     public Long getPlatform_id() {

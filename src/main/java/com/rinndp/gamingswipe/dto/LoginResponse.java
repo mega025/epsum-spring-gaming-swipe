@@ -42,8 +42,8 @@ public class LoginResponse {
         return user_id;
     }
 
-    public void setId(Long id) {
-        this.user_id = id;
+    public void setId(Long user_id) {
+        this.user_id = user_id;
     }
 
     public String getFirstName() {

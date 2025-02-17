@@ -40,14 +40,16 @@ public class UserService {
         this.userRepository.delete(optionalUser);
     }
 
-    public User updateUser(Long id, User updatedUser) {
+    public ApiDelivery updateUser(Long id, User updatedUser) {
         return userRepository.findById(id).map(existingUser -> {
 
             existingUser.getPersonalDetails().setFirstName(updatedUser.getPersonalDetails().getFirstName());
             existingUser.getPersonalDetails().setLastName(updatedUser.getPersonalDetails().getLastName());
+            existingUser.getPersonalDetails().setImage_url(updatedUser.getPersonalDetails().getImage_url());
             existingUser.getPersonalDetails().setPassword(updatedUser.getPersonalDetails().getPassword());
 
-            return userRepository.save(existingUser);
+             this.userRepository.save(existingUser);
+             return new ApiDelivery("User updated correctly", true, 200, null, null);
         }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 

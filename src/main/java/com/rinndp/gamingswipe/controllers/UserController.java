@@ -30,8 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/update/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
-        return ResponseEntity.ok(this.userService.updateUser(userId, updatedUser));
+    public ResponseEntity<ApiDelivery> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        ApiDelivery response = this.userService.updateUser(userId, updatedUser);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/login")
