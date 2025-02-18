@@ -2,6 +2,7 @@ package com.rinndp.gamingswipe.services;
 
 import com.rinndp.gamingswipe.dto.ApiDelivery;
 import com.rinndp.gamingswipe.dto.LoginResponse;
+import com.rinndp.gamingswipe.dto.PasswordsDTO;
 import com.rinndp.gamingswipe.models.PersonalDetails;
 import com.rinndp.gamingswipe.models.User;
 import com.rinndp.gamingswipe.repositories.UserRepository;
@@ -46,11 +47,22 @@ public class UserService {
             existingUser.getPersonalDetails().setFirstName(updatedUser.getPersonalDetails().getFirstName());
             existingUser.getPersonalDetails().setLastName(updatedUser.getPersonalDetails().getLastName());
             existingUser.getPersonalDetails().setImage_url(updatedUser.getPersonalDetails().getImage_url());
-            existingUser.getPersonalDetails().setPassword(updatedUser.getPersonalDetails().getPassword());
 
              this.userRepository.save(existingUser);
              return new ApiDelivery("User updated correctly", true, 200, null, null);
         }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+
+    public ApiDelivery updateUserPassword (Long id, PasswordsDTO passwordsDTO) {
+        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        if(this.passwordEncoder.matches(passwordsDTO.getOldPassword(), user.getPersonalDetails().getPassword())) {
+            user.getPersonalDetails().setPassword(this.passwordEncoder.encode(passwordsDTO.getNewPassword()));
+            this.userRepository.save(user);
+            return new ApiDelivery("Password changed correctly", true, 200, null, null);
+        } else {
+            return new ApiDelivery("Incorrect password", false, 400, null, "Incorrect password");
+        }
     }
 
 

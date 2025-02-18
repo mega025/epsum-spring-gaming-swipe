@@ -1,15 +1,13 @@
 package com.rinndp.gamingswipe.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class User {
@@ -22,6 +20,7 @@ public class User {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @JoinTable(
             name = "user_personal_details",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -30,12 +29,20 @@ public class User {
     private PersonalDetails personalDetails;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinTable(
             name = "user_fav_games",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "videogame_id")
     )
     private List<FavVideogame> list_fav_games = new ArrayList<>();
+
+    @JsonProperty("listFavGames")
+    public List<Long> getFavGameIds() {
+        return list_fav_games.stream()
+                .map(FavVideogame::getVideogameId)
+                .collect(Collectors.toList());
+    }
 
     public Long getUserId() {
         return user_id;
