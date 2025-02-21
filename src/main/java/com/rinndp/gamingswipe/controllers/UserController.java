@@ -32,9 +32,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User userCreated = userService.createUser(user);
-        return ResponseEntity.ok(userCreated);
+    public ResponseEntity<ApiDelivery> createUser(@RequestBody User user) {
+        ApiDelivery response = userService.createUser(user);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/update/{userId}")

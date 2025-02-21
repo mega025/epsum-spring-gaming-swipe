@@ -67,10 +67,10 @@ public class UserService {
 
 
 
-    public User createUser(User user) {
+    public ApiDelivery createUser(User user) {
         Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
         if (optionalUser.isPresent()){
-            throw new RuntimeException("This email already exists");
+            return new ApiDelivery("This email already exists", false, 400, null, null);
         } else {
             User newUser = new User();
             newUser.setEmail(user.getEmail());
@@ -83,8 +83,9 @@ public class UserService {
 
             newUser.setPersonalDetails(newPersonalDetails);
             newUser.setListFavGames(new ArrayList<>());
+            this.userRepository.save(newUser);
 
-            return this.userRepository.save(newUser);
+            return new ApiDelivery("User created correclty", true, 200, null, null);
         }
     }
 
