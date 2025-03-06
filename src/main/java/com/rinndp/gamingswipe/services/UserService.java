@@ -61,7 +61,7 @@ public class UserService {
             this.userRepository.save(user);
             return new ApiDelivery("Password changed correctly", true, 200, null, null);
         } else {
-            return new ApiDelivery("Incorrect password", false, 400, null, "Incorrect password");
+            return new ApiDelivery("Incorrect password", false, 401, null, "Incorrect password");
         }
     }
 
@@ -70,7 +70,7 @@ public class UserService {
     public ApiDelivery createUser(User user) {
         Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
         if (optionalUser.isPresent()){
-            return new ApiDelivery("This email already exists", false, 400, null, null);
+            return new ApiDelivery("This email already exists", false, 401, null, null);
         } else {
             User newUser = new User();
             newUser.setEmail(user.getEmail());
@@ -97,7 +97,7 @@ public class UserService {
 
         User user = optionalUser.get();
         if(!this.passwordEncoder.matches(password, user.getPersonalDetails().getPassword()))
-            return new ApiDelivery<>("Incorrect password", false, 400, null, "Incorrect password");
+            return new ApiDelivery<>("Incorrect password", false, 401, null, "Incorrect password");
 
         String token = createToken(email);
         LoginResponse loggedUser = new LoginResponse(user, token);

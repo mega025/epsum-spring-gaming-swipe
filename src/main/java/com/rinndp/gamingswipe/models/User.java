@@ -37,12 +37,12 @@ public class User {
     )
     private List<FavVideogame> list_fav_games = new ArrayList<>();
 
-    @JsonProperty("listFavGames")
-    public List<Long> getFavGameIds() {
-        return list_fav_games.stream()
-                .map(FavVideogame::getVideogameId)
-                .collect(Collectors.toList());
-    }
+//    @JsonProperty("listFavGames")
+//    public List<Long> getFavGameIds() {
+//        return list_fav_games.stream()
+//                .map(FavVideogame::getVideogameId)
+//                .collect(Collectors.toList());
+//    }
 
     public Long getUserId() {
         return user_id;
