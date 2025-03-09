@@ -39,39 +39,46 @@ public class FavVideogameService {
         return this.favVideogameRepository.findById(id);
     }
 
-    public ApiDelivery addFavGame(Long userId, FavVideogame favVideogame) {
-        Optional<User> optionalUser = Optional.ofNullable(this.userService.getUserById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found " + userId)));
+    public Optional<FavVideogame> getGameByName(String name) {
+        return this.favVideogameRepository.findByName(name);
+    }
 
-        if (optionalUser.isPresent()) {
-            try {
-                User user = optionalUser.get();
-                List<FavVideogame> favList = user.getListFavGames();
+    public ApiDelivery addFavGame(Long userId, FavVideogame favVideogame) {
+        try {
+            User user = this.userService.getUserById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found " + userId));
+
+            FavVideogame existingFavVideogame = this.favVideogameRepository.findByName(favVideogame.getName())
+                    .orElse(null);
+
+            List<FavVideogame> favList = user.getListFavGames();
+
+            FavVideogame finalFavVideogame = favVideogame;
+            boolean alreadyAdded = favList.stream()
+                    .anyMatch(fav -> fav.getName().equals(finalFavVideogame.getName()));
+
+            if (alreadyAdded) {
+                return new ApiDelivery("Game already added", false, 400, null, null);
+            }
+
+            if (existingFavVideogame != null) {
+                favVideogame = existingFavVideogame;
+            } else {
                 favVideogame.setListGenres(mergeGenres(favVideogame.getListGenres()));
                 favVideogame.setListPlatforms(mergePlatforms(favVideogame.getListPlatforms()));
-
-                boolean alreadyAdded = false;
-                for (FavVideogame fav : favList) {
-                    if(fav.getName().equals(favVideogame.getName())) {
-                        alreadyAdded = true;
-                    }
-                }
-
-                if (alreadyAdded) {
-                    return new ApiDelivery("Game already added", false, 400, null, null);
-                } else {
-                    user.setListFavGames(favList);
-                    favList.add(favVideogame);
-                    this.favVideogameRepository.save(favVideogame);
-                    return new ApiDelivery("Game added correctly", true, 200, null, null);
-                }
-                } catch (Exception e) {
-                e.printStackTrace();
+                this.favVideogameRepository.save(favVideogame);
             }
-        } else {
-            throw new IllegalArgumentException("User not found " + userId);
+
+            favList.add(favVideogame);
+            user.setListFavGames(favList);
+            this.userRepository.save(user);
+
+            return new ApiDelivery("Game added correctly", true, 200, null, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiDelivery("Error adding game", false, 500, null, null);
         }
-        return null;
     }
 
     private List<Genre> mergeGenres(List<Genre> newGenres) {
